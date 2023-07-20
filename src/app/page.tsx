@@ -14,10 +14,10 @@ export default async function Home() {
       <LoginButton />
       <LogoutButton />
       <Link href="/artist">Artist Page</Link>
-      <h2>Server call</h2>
+      {/* <h2>Server call</h2> */}
 
       {/* <pre>{JSON.stringify(session)}</pre> */}
-      <h2>Client call</h2>
+      {/* <h2>Client call</h2> */}
       {/* <User /> */}
     </main>
   );
