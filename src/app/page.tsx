@@ -9,11 +9,13 @@ export default async function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1>Tip App</h1>
+      <h1 className="text-red">Tip App</h1>
       <div>Hello World</div>
       <LoginButton />
       <LogoutButton />
       <Link href="/artist">Artist Page</Link>
+
+      <Link href="/register">register</Link>
       {/* <h2>Server call</h2> */}
 
       {/* <pre>{JSON.stringify(session)}</pre> */}
