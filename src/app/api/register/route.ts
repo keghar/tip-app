@@ -4,6 +4,7 @@ import { prisma } from "../../../../lib/prisma"
 
 
 export async function POST(req: Request) {
+    try {
     const {email, password} = await req.json()
 
     const hashed = await hash(password, 12)
@@ -20,4 +21,13 @@ export async function POST(req: Request) {
             email: user.email
         }
     })
+} catch (err:any){
+    return new NextResponse(JSON.stringify({
+        error: err.message
+    }),
+    {
+        status:500
+    })
+
+}
 }

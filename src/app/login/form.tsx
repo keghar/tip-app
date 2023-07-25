@@ -5,38 +5,36 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signIn } from "next-auth/react";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
-export const RegisterForm = () => {
+export const LoginForm = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/artist";
+  //   const error = searchParams.get("error") ? "Invalid credentials" : " ";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<String | null>(null);
+  const [error, setError] = useState("");
 
-  const onSubmit = async (e: FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     try {
-      const res = await fetch("/api/register", {
-        method: "POST",
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
+      const res = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+        callbackUrl,
       });
-      if (res.ok) {
-        signIn();
+      if (!res?.error) {
+        router.push(callbackUrl);
       } else {
-        setError((await res.json()).error);
+        setError("invalid email or password");
       }
-    } catch (error: any) {
-      setError(error?.message);
-      console.log(error);
-    }
+    } catch (err: any) {}
 
-    console.log("register");
+    console.log("Login");
   };
   return (
     <form onSubmit={onSubmit} className="space-y-12">
@@ -64,7 +62,7 @@ export const RegisterForm = () => {
       {error && <Alert>{error}</Alert>}
       <div className="w-full pb-8">
         <Button className="w-full border border-black rounded-lg text-white bg-black">
-          Register
+          Login
         </Button>
       </div>
     </form>
